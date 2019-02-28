@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -20,12 +21,31 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
-            'name',
+            [
+                'label' => 'Name',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    return Html::a($data->name, Url::to(['user/view', 'id' => $data->id]));
+                },
+            ],
+            [
+                'label' => 'Groups',
+                'format' => 'raw',
+                'value' => function ($data) {
+//                    $userRoles = $data->getRoles();
+//                    $rolesArray = [];
+//                    foreach ($userRoles as $role) {
+//                        $description = $role->description;
+//                        if ($data->position != '') {
+//                            $description .= ' <span class="text-muted">(' . Html::encode($data->position) . ')</span>';
+//                        }
+//                        $rolesArray[] = $description;
+//                    }
+//                    return implode(', ', $rolesArray);
+                },
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>

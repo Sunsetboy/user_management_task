@@ -6,6 +6,7 @@ use Yii;
 
 /**
  * This is the model class for table "{{%user2group}}".
+ * Used for convenient removing links between users and groups
  *
  * @property int $uid user id
  * @property int $gid group id
@@ -26,9 +27,7 @@ class User2Group extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'gid'], 'required'],
             [['uid', 'gid'], 'integer'],
-            [['uid', 'gid'], 'unique', 'targetAttribute' => ['uid', 'gid']],
         ];
     }
 

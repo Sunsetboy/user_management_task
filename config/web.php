@@ -4,8 +4,10 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
-    'id' => 'basic',
+    'id' => 'user_management_app',
+    'name' => 'Simple user manager',
     'basePath' => dirname(__DIR__),
+    'homeUrl' => '/',
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
