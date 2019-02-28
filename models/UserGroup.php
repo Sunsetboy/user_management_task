@@ -5,19 +5,19 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%user}}".
+ * This is the model class for table "{{%user_group}}".
  *
  * @property int $id primary key
- * @property string $name user name
+ * @property string $name group name
  */
-class User extends \yii\db\ActiveRecord
+class UserGroup extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%user}}';
+        return '{{%user_group}}';
     }
 
     /**
