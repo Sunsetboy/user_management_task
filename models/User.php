@@ -15,6 +15,10 @@ use yii\db\ActiveQuery;
  */
 class User extends \yii\db\ActiveRecord
 {
+
+    // Used in forms
+    public $groupIds = [];
+
     /**
      * Returns table name
      *
@@ -47,6 +51,7 @@ class User extends \yii\db\ActiveRecord
                 'pattern' => '/^([A-Za-z0-9])+$/u',
                 'message' => 'Name can contain only letters and digits',
             ],
+            [['groupIds'], 'each', 'rule' => ['integer']],
         ];
     }
 
@@ -60,6 +65,7 @@ class User extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'groupIds' => 'Member of groups',
         ];
     }
 
@@ -74,5 +80,57 @@ class User extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UserGroup::class, ['id' => 'gid'])
             ->viaTable('user2group', ['uid' => 'id']);
+    }
+
+    /**
+     * Executed after querying a user
+     * Populates the array of user's groups ids
+     */
+    public function afterFind(): void
+    {
+        parent::afterFind();
+
+        foreach ($this->groups as $group) {
+            $this->groupIds[] = $group->id;
+        }
+    }
+
+    /**
+     * Method that is called after saving a model
+     *
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes): void
+    {
+        // remove all links between current user and groups
+        User2Group::deleteAll(['uid' => $this->id]);
+
+        if (is_array($this->groupIds)) {
+            foreach ($this->groupIds as $groupId) {
+                $user2group = new User2Group();
+                $user2group->uid = $this->id;
+                $user2group->gid = $groupId;
+                $user2group->save();
+            }
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * Returns an array of user groups names
+     *
+     * @return array
+     */
+    public function getGroupsNames(): array
+    {
+        $userGroups = $this->groups;
+        $groupsNamesArray = [];
+        foreach ($userGroups as $group) {
+            $groupName = $group->name;
+            $groupsNamesArray[] = $groupName;
+        }
+        return $groupsNamesArray;
     }
 }

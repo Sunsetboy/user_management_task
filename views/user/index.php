@@ -26,26 +26,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Name',
                 'format' => 'raw',
                 'value' => function ($data) {
-                    return Html::a($data->name, Url::to(['user/view', 'id' => $data->id]));
+                    return Html::a(Html::encode($data->name), Url::to(['user/view', 'id' => $data->id]));
                 },
             ],
             [
                 'label' => 'Groups',
                 'format' => 'raw',
                 'value' => function ($data) {
-//                    $userRoles = $data->getRoles();
-//                    $rolesArray = [];
-//                    foreach ($userRoles as $role) {
-//                        $description = $role->description;
-//                        if ($data->position != '') {
-//                            $description .= ' <span class="text-muted">(' . Html::encode($data->position) . ')</span>';
-//                        }
-//                        $rolesArray[] = $description;
-//                    }
-//                    return implode(', ', $rolesArray);
+                    $groupsNamesArray = $data->getGroupsNames();
+
+                    return implode(', ', $groupsNamesArray);
                 },
             ],
-
         ],
     ]); ?>
 </div>

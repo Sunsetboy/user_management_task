@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\UserGroup;
 use Yii;
 use app\models\User;
 use yii\data\ActiveDataProvider;
@@ -65,6 +66,7 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
+        $allGroups = UserGroup::getGroupsIdsNames();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -72,6 +74,7 @@ class UserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'allGroups' => $allGroups,
         ]);
     }
 
@@ -85,13 +88,18 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $allGroups = UserGroup::getGroupsIdsNames();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            if($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'allGroups' => $allGroups,
         ]);
     }
 

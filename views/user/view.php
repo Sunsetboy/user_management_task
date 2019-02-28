@@ -26,12 +26,22 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-        ],
-    ]) ?>
+    <p>
+        <strong>ID:</strong> <?php echo $model->id; ?>
+    </p>
+    <p>
+        <strong>Name:</strong> <?php echo Html::encode($model->name); ?>
+    </p>
 
+    <?php if (sizeof($model->groups) > 0): ?>
+        <p>
+            <strong>Member of groups:</strong>
+        </p>
+        <ul>
+            <?php foreach ($model->groups as $group): ?>
+                <?php echo '<li>' . $group->name . '</li>'; ?>
+            <?php endforeach; ?>
+        </ul>
+
+    <?php endif; ?>
 </div>

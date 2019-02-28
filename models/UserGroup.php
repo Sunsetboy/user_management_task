@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
+use yii\db\Query;
 
 /**
  * This is the model class for table "{{%user_group}}".
@@ -71,5 +72,38 @@ class UserGroup extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::class, ['id' => 'uid'])
             ->viaTable('user2group', ['gid' => 'id']);
+    }
+
+    /**
+     * Returns a number of users in a group
+     * To get this number use $group->usersCount
+     *
+     * @return int
+     * @throws InvalidConfigException
+     */
+    public function getUsersCount(): int
+    {
+        return (int)$this->hasMany(User::class, ['id' => 'uid'])
+            ->viaTable('user2group', ['gid' => 'id'])
+            ->count();
+    }
+
+    /**
+     * Returns array of groups in format [id => name]
+     *
+     * @return array
+     */
+    public static function getGroupsIdsNames(): array
+    {
+        $groups = [];
+        $groupsRawArray = (new Query())->select('id, name')
+            ->from('{{%user_group}}')
+            ->orderBy('name')
+            ->all();
+        foreach ($groupsRawArray as $groupItem) {
+            $groups[$groupItem['id']] = $groupItem['name'];
+        }
+
+        return $groups;
     }
 }

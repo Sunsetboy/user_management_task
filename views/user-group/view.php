@@ -17,21 +17,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if ($model->usersCount === 0): ?>
+            <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php else:?>
+            <span class="text-muted">You can't delete a group with more than zero users</span>
+        <?php endif; ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-        ],
-    ]) ?>
+    <p>
+        <strong>ID:</strong>
+        <?php echo $model->id; ?>
+    </p>
+    <p>
+        <strong>Name:</strong>
+        <?php echo Html::encode($model->name); ?>
+    </p>
+    <p>
+        <strong>Members count:</strong>
+        <?php echo $model->usersCount; ?>
+    </p>
 
 </div>

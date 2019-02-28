@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\UserGroup */
 
-$this->title = 'Create User Group';
+$this->title = 'Create a user group';
 $this->params['breadcrumbs'][] = ['label' => 'User Groups', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
