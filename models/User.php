@@ -119,6 +119,17 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
+     * Method that is called after deleting a model
+     */
+    public function afterDelete():void
+    {
+        // remove all links between current user and groups
+        User2Group::deleteAll(['uid' => $this->id]);
+
+        parent::afterDelete();
+    }
+
+    /**
      * Returns an array of user groups names
      *
      * @return array

@@ -16,7 +16,7 @@ class User2Group extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName():string
     {
         return '{{%user2group}}';
     }
@@ -24,7 +24,7 @@ class User2Group extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules():array
     {
         return [
             [['uid', 'gid'], 'integer'],
@@ -34,7 +34,7 @@ class User2Group extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels():array
     {
         return [
             'uid' => 'Uid',

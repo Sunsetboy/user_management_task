@@ -6,6 +6,7 @@ use Yii;
 use app\models\UserGroup;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -98,20 +99,28 @@ class UserGroupController extends Controller
     /**
      * Deletes an existing UserGroup model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
+     *
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws HttpException if the model cannot be deleted
+     * @throws \Exception
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $group = $this->findModel($id);
+        if ($group->usersCount === 0) {
+            $group->delete();
+        } else {
+            throw new HttpException(400, "You can't delete a group with more than zero users");
+        }
         return $this->redirect(['index']);
     }
 
     /**
      * Finds the UserGroup model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
+     *
      * @param integer $id
      * @return UserGroup the loaded model
      * @throws NotFoundHttpException if the model cannot be found

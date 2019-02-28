@@ -1,5 +1,6 @@
 <?php
 
+use app\models\User;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -15,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create a user', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -33,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Groups',
                 'format' => 'raw',
                 'value' => function ($data) {
+                    /** @var User $data */
                     $groupsNamesArray = $data->getGroupsNames();
 
                     return implode(', ', $groupsNamesArray);
